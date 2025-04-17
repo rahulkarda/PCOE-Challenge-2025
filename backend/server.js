@@ -1,31 +1,36 @@
-const express = require("express")
-const cors = require("cors")
-const fs = require("fs")
-const path = require("path")
+const express = require("express");
+const cors = require("cors");
+const fs = require("fs").promises; // Use promises API for async operations
+const path = require("path");
 
-const app = express()
-const PORT = process.env.PORT || 5050
+const app = express();
+const PORT = process.env.PORT || 5050;
 
 // Middleware
-app.use(cors())
-app.use(express.json())
+app.use(cors());
+app.use(express.json());
 
 // Load airport data
-let airportsData = {}
-try {
-  const data = fs.readFileSync(path.join(__dirname, "data/airports.json"), "utf8")
-  airportsData = JSON.parse(data)
-} catch (err) {
-  console.error("Error loading airport data:", err)
-}
+let airportsData = {};
+const dataFilePath = path.join(__dirname, "data/airports.json");
+
+const loadAirportData = async () => {
+  try {
+    const data = await fs.readFile(dataFilePath, "utf8");
+    airportsData = JSON.parse(data);
+  } catch (err) {
+    console.error("Error loading airport data:", err);
+    // Handle the error appropriately, maybe exit the process or use an empty object
+  }
+};
 
 // Convert object to array for easier manipulation
 const getAirportsArray = () => {
   return Object.keys(airportsData).map((key) => ({
     ...airportsData[key],
     id: key,
-  }))
-}
+  }));
+};
 
 // Helper function to add region field
 const addRegionField = (airport) => {
@@ -33,81 +38,80 @@ const addRegionField = (airport) => {
     return {
       ...airport,
       region: `${airport.country}-${airport.state}`,
-    }
+    };
   }
-  return airport
-}
+  return airport;
+};
 
 // Root endpoint
 app.get("/", (req, res) => {
-  res.send("Airport Data Management API is running")
-})
+  res.send("Airport Data Management API is running");
+});
 
 app.get("/airports", (req, res) => {
-  const { page = 1, limit = 50, sortBy = "name", order = "asc", filter = "" } = req.query
+  const { page = 1, limit = 50, sortBy = "name", order = "asc", filter = "" } = req.query;
 
-  let airports = getAirportsArray()
+  let allAirports = getAirportsArray(); // Get all airports
 
   // Add region field
-  airports = airports.map(addRegionField)
+  let airports = allAirports.map(addRegionField);
 
   // Filter by name (contains)
   if (filter) {
     airports = airports.filter((airport) =>
       airport.name?.toLowerCase().includes(filter.toLowerCase())
-    )
+    );
   }
 
   // Sort
   airports.sort((a, b) => {
-    const aVal = a[sortBy] || ""
-    const bVal = b[sortBy] || ""
+    const aVal = a[sortBy] || "";
+    const bVal = b[sortBy] || "";
 
     if (typeof aVal === "number" && typeof bVal === "number") {
-      return order === "asc" ? aVal - bVal : bVal - aVal
+      return order === "asc" ? aVal - bVal : bVal - aVal;
     } else {
       return order === "asc"
         ? aVal.toString().localeCompare(bVal.toString())
-        : bVal.toString().localeCompare(aVal.toString())
+        : bVal.toString().localeCompare(aVal.toString());
     }
-  })
+  });
 
   // Paginate
-  const offset = (page - 1) * limit
-  const paginated = airports.slice(offset, offset + Number(limit))
+  const offset = (page - 1) * limit;
+  const paginated = airports.slice(offset, offset + Number(limit));
 
   res.json({
-    total: airports.length,
+    total: allAirports.length, // Use the length of the initial array
     page: Number(page),
     limit: Number(limit),
     data: paginated,
-  })
-})
-
+  });
+});
 
 // GET airport by ICAO
 app.get("/airports/:icao", (req, res) => {
-  const { icao } = req.params
+  const { icao } = req.params;
 
   if (airportsData[icao]) {
-    res.json(addRegionField(airportsData[icao]))
+    res.json(addRegionField(airportsData[icao]));
   } else {
-    res.status(404).json({ error: "Airport not found" })
+    res.status(404).json({ error: "Airport not found" });
   }
-})
+});
 
 // POST new airport
-app.post("/airports", (req, res) => {
-  const { name, country, icao, city, state, elevation, iata, lat, lon, tz } = req.body
+app.post("/airports", async (req, res) => {
+  const { name, country, icao, city, state, elevation, iata, lat, lon, tz } = req.body;
 
   // Validate required fields
   if (!name || !country || !icao) {
-    return res.status(400).json({ error: "Name, country, and ICAO code are required" })
+    return res.status(400).json({ error: "Name, country, and ICAO code are required" });
   }
 
   // Check if ICAO already exists
   if (airportsData[icao]) {
-    return res.status(400).json({ error: "Airport with this ICAO code already exists" })
+    return res.status(400).json({ error: "Airport with this ICAO code already exists" });
   }
 
   // Create new airport
@@ -122,128 +126,129 @@ app.post("/airports", (req, res) => {
     lat: lat ? Number.parseFloat(lat) : 0,
     lon: lon ? Number.parseFloat(lon) : 0,
     tz: tz || "",
-  }
+  };
 
   // Add to data
-  airportsData[icao] = newAirport
+  airportsData[icao] = newAirport;
 
   // Save to file
   try {
-    fs.writeFileSync(path.join(__dirname, "data/airports.json"), JSON.stringify(airportsData, null, 2))
-    res.status(201).json(addRegionField(newAirport))
+    await fs.writeFile(dataFilePath, JSON.stringify(airportsData, null, 2));
+    res.status(201).json(addRegionField(newAirport));
+    console.log("Airport data loaded successfully:", Object.keys(airportsData).length, "airports found."); // Add this log
   } catch (err) {
-    console.error("Error saving airport data:", err)
-    res.status(500).json({ error: "Failed to save airport data" })
+    console.error("Error saving airport data:", err);
+    res.status(500).json({ error: "Failed to save airport data" });
   }
-})
+});
 
 // DELETE airport
-app.delete("/airports/:icao", (req, res) => {
-  const { icao } = req.params
+app.delete("/airports/:icao", async (req, res) => {
+  const { icao } = req.params;
 
   if (!airportsData[icao]) {
-    return res.status(404).json({ error: "Airport not found" })
+    return res.status(404).json({ error: "Airport not found" });
   }
 
   // Delete airport
-  const deletedAirport = airportsData[icao]
-  delete airportsData[icao]
+  const deletedAirport = airportsData[icao];
+  delete airportsData[icao];
 
   // Save to file
   try {
-    fs.writeFileSync(path.join(__dirname, "data/airports.json"), JSON.stringify(airportsData, null, 2))
-    res.json({ message: "Airport deleted successfully", airport: deletedAirport })
+    await fs.writeFile(dataFilePath, JSON.stringify(airportsData, null, 2));
+    res.json({ message: "Airport deleted successfully", airport: deletedAirport });
   } catch (err) {
-    console.error("Error saving airport data:", err)
-    res.status(500).json({ error: "Failed to delete airport" })
+    console.error("Error saving airport data:", err);
+    res.status(500).json({ error: "Failed to delete airport" });
   }
-})
+});
 
 // GET average elevation
 app.get("/scripts/average-elevation", (req, res) => {
-  const airports = getAirportsArray()
+  const airports = getAirportsArray();
 
   if (airports.length === 0) {
-    return res.json({ average: 0 })
+    return res.json({ average: 0 });
   }
 
-  // Fix: Ensure we're working with numbers and handle potential NaN values
   const validElevations = airports
     .map((airport) => Number.parseInt(airport.elevation || 0, 10))
-    .filter((elevation) => !isNaN(elevation))
+    .filter((elevation) => !isNaN(elevation));
 
   if (validElevations.length === 0) {
-    return res.json({ average: 0 })
+    return res.json({ average: 0 });
   }
 
-  const sum = validElevations.reduce((acc, elevation) => acc + elevation, 0)
-  const average = Math.round(sum / validElevations.length)
+  const sum = validElevations.reduce((acc, elevation) => acc + elevation, 0);
+  const average = Math.round(sum / validElevations.length);
 
-  res.json({ average })
-})
+  res.json({ average });
+});
 
 // GET average elevation per country
 app.get("/scripts/average-elevation-per-country", (req, res) => {
-  const airports = getAirportsArray()
-  const countries = {}
+  const airports = getAirportsArray();
+  const countries = {};
 
   airports.forEach((airport) => {
     if (!countries[airport.country]) {
       countries[airport.country] = {
         sum: 0,
         count: 0,
-      }
+      };
     }
 
-    // Fix: Ensure we're working with numbers
-    const elevation = Number.parseInt(airport.elevation || 0, 10)
+    const elevation = Number.parseInt(airport.elevation || 0, 10);
     if (!isNaN(elevation)) {
-      countries[airport.country].sum += elevation
-      countries[airport.country].count += 1
+      countries[airport.country].sum += elevation;
+      countries[airport.country].count += 1;
     }
-  })
+  });
 
   const result = Object.keys(countries).map((country) => ({
     country,
     average: Math.round((countries[country].sum / countries[country].count) * 100) / 100,
-  }))
+  }));
 
-  res.json(result)
-})
+  res.json(result);
+});
 
 // GET airports with no IATA code
 app.get("/scripts/no-iata", (req, res) => {
-  const airports = getAirportsArray()
-  const noIata = airports.filter((airport) => !airport.iata || airport.iata === "")
+  const airports = getAirportsArray();
+  const noIata = airports.filter((airport) => !airport.iata || airport.iata === "");
 
-  res.json(noIata)
-})
+  res.json(noIata);
+});
 
 // GET top timezones
 app.get("/scripts/top-timezones", (req, res) => {
-  const { limit = 10 } = req.query
-  const airports = getAirportsArray()
-  const timezones = {}
+  const { limit = 10 } = req.query;
+  const airports = getAirportsArray();
+  const timezones = {};
 
   airports.forEach((airport) => {
     if (airport.tz) {
-      timezones[airport.tz] = (timezones[airport.tz] || 0) + 1
+      timezones[airport.tz] = (timezones[airport.tz] || 0) + 1;
     }
-  })
+  });
 
   const result = Object.keys(timezones)
     .map((tz) => ({ timezone: tz, count: timezones[tz] }))
     .sort((a, b) => b.count - a.count)
-    .slice(0, Number.parseInt(limit))
+    .slice(0, Number.parseInt(limit));
 
-  res.json(result)
-})
+  res.json(result);
+});
 
-// Only start the server if this file is run directly, not when imported in tests
-if (require.main === module) {
-  app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`)
-  })
-}
+// Start the server after loading the data
+loadAirportData().then(() => {
+  if (require.main === module) {
+    app.listen(PORT, () => {
+      console.log(`Server running on http://localhost:${PORT}`);
+    });
+  }
+});
 
-module.exports = app
+module.exports = app;
