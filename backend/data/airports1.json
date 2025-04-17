@@ -1,0 +1,98 @@
+{
+  "00AK": {
+    "icao": "00AK",
+    "iata": "",
+    "name": "Lowell Field",
+    "city": "Anchor Point",
+    "state": "Alaska",
+    "country": "US",
+    "elevation": 450,
+    "lat": 59.94919968,
+    "lon": -151.695999146,
+    "tz": "America/Anchorage"
+  },
+  "00AL": {
+    "icao": "00AL",
+    "iata": "",
+    "name": "Epps Airpark",
+    "city": "Harvest",
+    "state": "Alabama",
+    "country": "US",
+    "elevation": 820,
+    "lat": 34.8647994995,
+    "lon": -86.7703018188,
+    "tz": "America/Chicago"
+  },
+  "00AZ": {
+    "icao": "00AZ",
+    "iata": "",
+    "name": "Cordes Airport",
+    "city": "Cordes",
+    "state": "Arizona",
+    "country": "US",
+    "elevation": 3810,
+    "lat": 34.3055992126,
+    "lon": -112.1650009155,
+    "tz": "America/Phoenix"
+  },
+  "ZUDC": {
+    "icao": "ZUDC",
+    "iata": "DCY",
+    "name": "Daocheng Yading Airport",
+    "city": "Daocheng County",
+    "state": "Sichuan",
+    "country": "CN",
+    "elevation": 14472,
+    "lat": 29.323056,
+    "lon": 100.053333,
+    "tz": "Asia/Shanghai"
+  },
+  "ZUDR": {
+    "icao": "ZUDR",
+    "iata": "DDR",
+    "name": "Rikaze Dingri Airport",
+    "city": "",
+    "state": "Tibet",
+    "country": "CN",
+    "elevation": 14108,
+    "lat": 28.6025,
+    "lon": 86.8103,
+    "tz": "Asia/Shanghai"
+  },
+  "ZUDX": {
+    "icao": "ZUDX",
+    "iata": "DAX",
+    "name": "Dachuan Airport",
+    "city": "Dazhou",
+    "state": "Sichuan",
+    "country": "CN",
+    "elevation": 0,
+    "lat": 31.1302,
+    "lon": 107.4295,
+    "tz": "Asia/Shanghai"
+  },
+  "TEST": {
+    "icao": "TEST",
+    "iata": "",
+    "name": "test2",
+    "city": "",
+    "state": "",
+    "country": "US",
+    "elevation": 0,
+    "lat": 9000,
+    "lon": 0,
+    "tz": "US/Arizona"
+  },
+  "CN": {
+    "icao": "CN",
+    "iata": "",
+    "name": "test3",
+    "city": "",
+    "state": "",
+    "country": "CN",
+    "elevation": 9000,
+    "lat": 0,
+    "lon": 0,
+    "tz": ""
+  }
+}
