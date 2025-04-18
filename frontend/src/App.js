@@ -99,14 +99,14 @@ function App() {
   // Reload data after adding/deleting
   const handleAirportAdded = () => {
     setShowForm(false);
-    loadAirports(); // Reload airport list
-    loadStatistics(); // Reload statistics
+    setTimeout(loadAirports, 500); // Reload airport list
+    setTimeout(loadStatistics, 500);
   };
 
   const handleAirportDeleted = () => {
     setShowDeleteForm(false);
-    loadAirports(); // Reload airport list
-    loadStatistics(); // Reload statistics
+    setTimeout(loadAirports, 500); // Reload airport list
+    setTimeout(loadStatistics, 500);
   };
 
   return (

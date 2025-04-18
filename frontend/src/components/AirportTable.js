@@ -70,13 +70,13 @@ const AirportTable = ({
               <tr key={airport.id || airport.icao} className={`hover:bg-gray-50 ${airport.elevation > 8000 ? "bg-red-100 font-semibold text-red-800" : ""}`}>
                  {/* ... table data cells (td) ... */}
                 <td className="p-3 border text-sm text-gray-800">{airport.name}</td>
-                <td className="p-3 border text-sm text-gray-800">{airport.city}</td>
+                <td className="p-3 border text-sm text-gray-800">{airport.city || "-"}</td>
                 <td className="p-3 border text-sm text-gray-800">{airport.state || "-"}</td>
                 <td className="p-3 border text-sm text-gray-800">{airport.country}</td>
                 <td className="p-3 border text-sm text-gray-800">{airport.region || "-"}</td>
                 <td className="p-3 border text-sm text-gray-800">{airport.elevation} ft</td>
                 <td className="p-3 border text-sm text-gray-800">{airport.iata || "-"}</td>
-                <td className="p-3 border text-sm text-gray-800">{airport.icao || "-"}</td>
+                <td className="p-3 border text-sm text-gray-800">{airport.icao}</td>
                 <td className="p-3 border text-sm text-gray-800">{airport.lat || "-"}</td>
                 <td className="p-3 border text-sm text-gray-800">{airport.lon || "-"}</td>
                 <td className="p-3 border text-sm text-gray-800">{airport.tz || "-"}</td>
