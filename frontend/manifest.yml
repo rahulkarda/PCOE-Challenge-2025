@@ -1,0 +1,6 @@
+applications:
+  - name: my-react-app
+    memory: 512M
+    buildpacks:
+      - https://github.com/cloudfoundry/nodejs-buildpack
+    command: "npm start"  # Optional: Specify the command to run your app (useful for custom setups)

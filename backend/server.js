@@ -48,6 +48,7 @@ app.get("/", (req, res) => {
   res.send("Airport Data Management API is running");
 });
 
+//Get all airports
 app.get("/airports", (req, res) => {
   const { page = 1, limit = 50, sortBy = "name", order = "asc", filter = "" } = req.query;
 
