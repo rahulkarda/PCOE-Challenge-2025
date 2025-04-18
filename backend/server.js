@@ -90,6 +90,36 @@ app.get("/airports", (req, res) => {
   });
 });
 
+// Get single airport with filter support
+app.get("/airport", (req, res) => {
+  const { $filter = "" } = req.query;
+
+  let allAirports = getAirportsArray(); // Get all airports
+
+  // Add region field
+  let airports = allAirports.map(addRegionField);
+
+  // Handle custom $filter query if provided
+  if ($filter) {
+    // Example: $filter=contains(name,'Cordes')
+    const filterParts = $filter.match(/contains\((\w+),'([^']+)'\)/); // Extract field and value from the contains function
+
+    if (filterParts) {
+      const [, field, value] = filterParts;
+      // Apply filter to the specified field
+      airports = airports.filter((airport) =>
+        airport[field] && airport[field].toLowerCase().includes(value.toLowerCase())
+      );
+    }
+  }
+
+  // If no filter is applied, return all airports
+  res.json({
+    data: airports,
+  });
+});
+
+
 // GET airport by ICAO
 app.get("/airports/:icao", (req, res) => {
   const { icao } = req.params;

@@ -63,7 +63,7 @@ The frontend application will start on http://localhost:3000.
     - `filter`: Filter by airport name substring
 
 - **GET /airports?$filter=contains(field,'value')** - Filter airports using contains syntax
-  - Example: `/airports?$filter=contains(name,'Cordes')`
+  - Example: `/airport?$filter=contains(name,'Cordes')`
 
 - **POST /airports** - Add a new airport
   - Required fields: name, country, icao
