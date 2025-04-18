@@ -7,10 +7,10 @@ A full-stack web application to manage and display airport data. The backend exp
 This application is deployed on SAP Business Technology Platform (SAP BTP) using Cloud Foundry.
 
 **Frontend:**
-https://frontend-insightful-wolverine-jk.cfapps.us10-001.hana.ondemand.com
+https://frontend-excellent-warthog-nq.cfapps.us10-001.hana.ondemand.com
 
 **Backend:**
-https://backend-quick-chimpanzee-kl.cfapps.us10-001.hana.ondemand.com/
+https://backend-impressive-okapi-wv.cfapps.us10-001.hana.ondemand.com
 
 ## Tech Stack
 
@@ -62,7 +62,7 @@ The frontend application will start on http://localhost:3000.
     - `order`: Sort order (asc, desc)
     - `filter`: Filter by airport name substring
 
-- **GET /airports?$filter=contains(field,'value')** - Filter airports using contains syntax
+- **GET /airport?$filter=contains(name,'value')** - Filter airports using contains syntax
   - Example: `/airport?$filter=contains(name,'Cordes')`
 
 - **POST /airports** - Add a new airport
