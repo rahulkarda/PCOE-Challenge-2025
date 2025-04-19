@@ -179,7 +179,7 @@ curl -X GET "http://localhost:5050/scripts/top-timezones?limit=10"
 ### Filter Airports by Name
 
 ```bash
-curl -X GET "http://localhost:5050/airports?$filter=contains(name,'Cordes')"
+curl -X GET "http://localhost:5050/airport?$filter=contains(name,'Cordes')"
 ```
 
 ## Features
