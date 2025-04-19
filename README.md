@@ -217,4 +217,5 @@ These scripts can be run independently to get data in the console.
 
 - Latitude and longitude are displayed in decimal degrees
 - The table is scrollable to accommodate all 11 columns
+- The Airports without IATA and Avg Elevation per Country is a scrollable list
 - The application provides a clean, minimalistic user interface
