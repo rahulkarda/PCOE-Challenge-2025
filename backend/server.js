@@ -50,7 +50,14 @@ app.get("/", (req, res) => {
 
 //Get all airports
 app.get("/airports", (req, res) => {
-  const { page = 1, limit = 50, sortBy = "name", order = "asc", filter = "" } = req.query;
+  const {
+    page = 1,
+    limit = 50,
+    sortBy = "name",
+    order = "asc",
+    filter = "",
+    paginated = "false",
+  } = req.query;
 
   let allAirports = getAirportsArray(); // Get all airports
 
@@ -78,17 +85,25 @@ app.get("/airports", (req, res) => {
     }
   });
 
-  // Paginate
-  const offset = (page - 1) * limit;
-  const paginated = airports.slice(offset, offset + Number(limit));
+  // If pagination is enabled, slice the data
+  if (paginated === "true") {
+    const offset = (page - 1) * limit;
+    const paginatedData = airports.slice(offset, offset + Number(limit));
+    return res.json({
+      total: airports.length,
+      page: Number(page),
+      limit: Number(limit),
+      data: paginatedData,
+    });
+  }
 
+  // Else, return full data
   res.json({
-    total: allAirports.length, // Use the length of the initial array
-    page: Number(page),
-    limit: Number(limit),
-    data: paginated,
+    total: airports.length,
+    data: airports,
   });
 });
+
 
 // Get single airport with filter support
 app.get("/airport", (req, res) => {

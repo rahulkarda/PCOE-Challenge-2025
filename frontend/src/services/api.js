@@ -7,7 +7,7 @@ const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5050";
 export const fetchAirports = async (sortBy = "name", order = "asc", filter = "", page = 1, limit = 50) => {
   try {
     const response = await axios.get(`${API_URL}/airports`, {
-      params: { sortBy, order, filter, page, limit }, // filter is correctly passed here
+      params: { paginated: true, sortBy, order, filter, page, limit },
     });
 
     // Assuming backend responds with { data: [airports], total: number, page: number, limit: number }

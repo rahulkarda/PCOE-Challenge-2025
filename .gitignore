@@ -3,6 +3,7 @@
 # dependencies
 /node_modules
 /frontend/node_modules
+/backend/node_modules
 
 # next.js
 /.next/
@@ -29,3 +30,6 @@ next-env.d.ts
 
 # macOS
 .DS_Store
+
+# Ignore frontend build files
+/frontend/build/
