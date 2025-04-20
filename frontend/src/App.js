@@ -24,7 +24,7 @@ function App() {
 
   // Fetch airports - passes filter, sort, pagination to backend
   const loadAirports = useCallback(async () => {
-    console.log(`Workspaceing page ${pagination.page}, limit ${pagination.limit}, filter: '${filter}', sort: ${sortBy} ${sortOrder}`); // Optional: for debugging
+    console.log(`Workspaceing page ${pagination.page}, limit ${pagination.limit}, filter: '${filter}', sort: ${sortBy} ${sortOrder}`); 
     try {
       const { airports: fetchedAirports, total, page, limit } = await fetchAirports(
         sortBy,

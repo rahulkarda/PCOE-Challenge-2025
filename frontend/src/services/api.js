@@ -1,7 +1,6 @@
-// api.js - Should look like this (no changes needed from your working version)
 import axios from "axios";
 
-// Ensure this points to your running backend
+// Ensure this points to your running backend URL
 const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5050";
 
 export const fetchAirports = async (sortBy = "name", order = "asc", filter = "", page = 1, limit = 50) => {
@@ -10,7 +9,6 @@ export const fetchAirports = async (sortBy = "name", order = "asc", filter = "",
       params: { paginated: true, sortBy, order, filter, page, limit },
     });
 
-    // Assuming backend responds with { data: [airports], total: number, page: number, limit: number }
     const { data, total, page: responsePage, limit: responseLimit } = response.data;
 
     return {
@@ -27,8 +25,6 @@ export const fetchAirports = async (sortBy = "name", order = "asc", filter = "",
     // throw error;
   }
 };
-
-// fetchAirport, addAirport, deleteAirport, fetchStatistics remain the same...
 
 export const fetchAirport = async (icao) => {
   try {
@@ -86,7 +82,5 @@ export const fetchStatistics = async () => {
         topTimezones: [],
         elevationPerCountry: [],
     };
-    // Or re-throw
-    // throw error;
   }
 };

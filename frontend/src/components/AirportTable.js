@@ -1,5 +1,3 @@
-// src/components/AirportTable.js
-
 import React from 'react';
 
 const AirportTable = ({
@@ -9,7 +7,7 @@ const AirportTable = ({
   onSort,
   pagination,
   setPagination,
-  filter, // <-- Add this prop back to the destructuring
+  filter, 
 }) => {
 
   // Calculate total pages based on the total items count from the API response
@@ -26,7 +24,6 @@ const AirportTable = ({
   return (
     <div className="overflow-x-auto shadow-md rounded-lg">
       <table className="min-w-full border-collapse bg-white">
-        {/* ... thead remains the same ... */}
         <thead className="bg-gray-100">
           <tr>
             <th className="p-3 border text-left text-sm font-semibold text-gray-700 cursor-pointer" onClick={() => onSort("name")}>
@@ -84,7 +81,6 @@ const AirportTable = ({
             ))
           ) : (
             <tr>
-              {/* This line now correctly uses the 'filter' prop */}
               <td colSpan={11} className="text-center p-4 border text-gray-500">
                 {pagination.total === 0 && filter ? `No airports found matching "${filter}".` : "No airports available."}
               </td>
@@ -93,7 +89,6 @@ const AirportTable = ({
         </tbody>
       </table>
 
-      {/* ... pagination controls remain the same ... */}
        {totalPages > 1 && (
         <div className="flex justify-center items-center gap-2 mt-4 py-2">
           <button

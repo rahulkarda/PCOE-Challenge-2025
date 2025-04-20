@@ -29,7 +29,7 @@ const AirportStatistics = ({ statistics, totalAirports }) => {
         <div className="bg-gray-50 p-4 rounded">
           <h3 className="text-sm font-medium text-gray-500">Airports without IATA</h3>
           <p className="text-2xl font-bold">
-            {noIataCount} ({noIataPercentage}%)
+            {noIataCount}
           </p>
           <div className="max-h-48 overflow-y-auto mt-2">
             <ul className="text-sm space-y-1">

@@ -7,10 +7,10 @@ A full-stack web application to manage and display airport data. The backend exp
 This application is deployed on SAP Business Technology Platform (SAP BTP) using Cloud Foundry.
 
 **Frontend:**
-https://frontend-excellent-warthog-nq.cfapps.us10-001.hana.ondemand.com
+https://frontend-responsive-ratel-oc.cfapps.us10-001.hana.ondemand.com
 
 **Backend:**
-https://backend-impressive-okapi-wv.cfapps.us10-001.hana.ondemand.com
+https://backend-bright-jackal-yj.cfapps.us10-001.hana.ondemand.com
 
 ## Tech Stack
 
@@ -83,8 +83,8 @@ The frontend application will start on http://localhost:3000.
 
 9. **Deployed to SAP BTP using Cloud Foundry**  
    - Both backend and frontend deployed to SAP BTP endpoints:
-     - Backend: https://backend-impressive-okapi-wv.cfapps.us10-001.hana.ondemand.com  
-     - Frontend: https://frontend-excellent-warthog-nq.cfapps.us10-001.hana.ondemand.com
+     - Backend: https://backend-bright-jackal-yj.cfapps.us10-001.hana.ondemand.com
+     - Frontend: https://frontend-responsive-ratel-oc.cfapps.us10-001.hana.ondemand.com
 
 ### Scripting Tasks Covered
 
